@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./Dashboard.css";
 import GridViewIcon from "@mui/icons-material/GridView";
 import DomainIcon from "@mui/icons-material/Domain";
@@ -9,8 +9,14 @@ import PowerOutlinedIcon from "@mui/icons-material/PowerOutlined";
 import StorageOutlinedIcon from "@mui/icons-material/StorageOutlined";
 import CableOutlinedIcon from "@mui/icons-material/CableOutlined";
 import AccessTimeOutlinedIcon from "@mui/icons-material/AccessTimeOutlined";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
+  let navigate =useNavigate();
+  useEffect(()=>{
+    let token=localStorage.getItem("token")
+    if(!token )  navigate("/login")
+  },[])
   return (
     <div className="home-container">
       <div className="left-box">

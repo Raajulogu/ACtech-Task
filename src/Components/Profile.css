@@ -99,3 +99,6 @@ td,th{
     display: flex;
     align-items: center;
 }
+.box{
+    gap:10px
+}

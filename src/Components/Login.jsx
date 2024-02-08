@@ -2,20 +2,39 @@ import React, { useState } from "react";
 import "./Login.css";
 import { useNavigate } from "react-router-dom";
 import GoogleIcon from '@mui/icons-material/Google';
+import axios from "axios";
+import asserts from "../assert";
+
+let api_url=asserts.api_url
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate=useNavigate();
 
-  function handleLogin(){
-    navigate('/dashboard');
+ 
+  async function handleLogin() {
+    if(!email || !password){
+      alert("Please enter a valid value");
+      return 0;
+    }
+    let user={email,password}
+    try {
+      let response = await axios.post(
+        `${api_url}/user/login`,
+        user
+      );
+      localStorage.setItem("token", response.data.token);
+      navigate("/");
+    } catch {
+      alert("Invalid Credentials");
+    }
   }
   return (
     <div className="container">
       <div className="row">
         <div className="log-box">
-          <form onSubmit={handleLogin} className="log-form">
+          <div className="log-form">
             <h1>Hey there!</h1>
             <label for="email">Email</label>
             <input
@@ -32,7 +51,7 @@ const Login = () => {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="Please Enter your Email"
+              placeholder="Please Enter your Password"
               className="input-box"
             />
             <div className="forgot-box">
@@ -42,16 +61,16 @@ const Login = () => {
               </div>
               <button className="forgot-btn">Forgot Password</button>
             </div>
-            <button className="btn log-btn" type="submit">
+            <button className="btn log-btn" onClick={()=>handleLogin()}>
               Login
             </button>
             <button className="btn google-btn"><GoogleIcon/>Login With Google</button>
             <div className="content">
               <p>
-                Don't have an account ? <a href="#">Sign up</a>
+                Don't have an account ? <a href="/signup">Sign up</a>
               </p>
             </div>
-          </form>
+          </div>
         </div>
 
         <div className="company-det">
